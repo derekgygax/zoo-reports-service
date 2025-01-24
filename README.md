@@ -1,109 +1,65 @@
-# Zoo Reports Service
+# reports-service
 
-This is the **Reports API** for managing zoo-related reports. Built with **FastAPI**, it handles operations such as report submissions, updates, and retrievals. It is part of a larger microservices-based architecture for zoo management.
+This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
----
+If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
-## Features
+## Running the application in dev mode
 
-- CRUD operations for reports.
-- Management of report types, statuses, and related entities.
-- Integration with a relational database (e.g., PostgreSQL).
-- Role-based access control (RBAC) with JWT authentication.
-- API documentation via Swagger UI and ReDoc.
+You can run your application in dev mode that enables live coding using:
 
----
-
-## Requirements
-
-Make sure you have the following installed:
-- Python 3.12.5
-- pip (Python package manager)
-
----
-
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/derekgygax/zoo-reports-service.git
-   cd zoo-reports-service
-   ```
-
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Set up environment variables:
-   - Create a `.env` file in the root directory with the necessary configuration.
-     Example:
-     ```
-     DATABASE_URL=postgresql://user:password@localhost:5432/zoo_reports
-     AUTH_SECRET=your_secret_key
-     AUTH_ALGORITHM=your_algorithm
-     ```
-
----
-
-## Running the API
-
-1. Start the development server:
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-2. Access the API documentation:
-   - Swagger UI: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-   - ReDoc: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
-
----
-
-## Project Structure
-
-```
-zoo-reports-service/
-├── app/
-│   ├── models/        # Database models
-│   ├── routers/       # API routes
-│   ├── schemas/       # Pydantic schemas
-│   ├── services/      # Business logic
-│   ├── __init__.py    # Package initialization
-├── main.py            # Entry point of the application
-├── requirements.txt   # Dependency file
-├── .env               # Environment variables
-├── README.md          # Project documentation
+```shell script
+./mvnw quarkus:dev
 ```
 
----
+> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
-## Testing
+## Packaging and running the application
 
-Run tests using your preferred testing framework (e.g., `pytest`):
-```bash
-pytest
+The application can be packaged using:
+
+```shell script
+./mvnw package
 ```
 
----
+It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
 
-## Contributing
+The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
 
-Contributions are welcome! Please fork the repository, create a new branch, and submit a pull request for review.
+If you want to build an _über-jar_, execute the following command:
 
----
+```shell script
+./mvnw package -Dquarkus.package.jar.type=uber-jar
+```
 
-## License
+The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
-This project is licensed under the [MIT License](LICENSE).
+## Creating a native executable
 
----
+You can create a native executable using:
 
-## Repository
+```shell script
+./mvnw package -Dnative
+```
 
-The repository for this project is hosted at: [https://github.com/derekgygax/zoo-reports-service.git](https://github.com/derekgygax/zoo-reports-service.git)
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+
+```shell script
+./mvnw package -Dnative -Dquarkus.native.container-build=true
+```
+
+You can then execute your native executable with: `./target/reports-service-1.0.0-SNAPSHOT-runner`
+
+If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+
+## Related Guides
+
+- JDBC Driver - H2 ([guide](https://quarkus.io/guides/datasource)): Connect to the H2 database via JDBC
+- Hibernate Validator ([guide](https://quarkus.io/guides/validation)): Validate object properties (field, getter) and method parameters for your beans (REST, CDI, Jakarta Persistence)
+- SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes with Swagger UI
+- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
+- OpenID Connect ([guide](https://quarkus.io/guides/security-openid-connect)): Verify Bearer access tokens and authenticate users with Authorization Code Flow
+- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
+- Security JPA ([guide](https://quarkus.io/guides/security-getting-started)): Secure your applications with username/password stored in a database via Jakarta Persistence
+- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
